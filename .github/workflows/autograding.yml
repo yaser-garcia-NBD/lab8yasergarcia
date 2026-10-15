@@ -1,0 +1,39 @@
+name: Evaluacion Automatica Lab 2
+
+on: [push]
+
+jobs:
+  evaluacion:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar codigo
+        uses: actions/checkout@v3
+
+      - name: Validar Etiquetas HTML5
+        run: |
+          python -c '
+          import sys
+
+          try:
+              with open("index.html", "r", encoding="utf-8") as f:
+                  html = f.read().lower()
+          except:
+              print("❌ Archivo index.html no encontrado.")
+              sys.exit(1)
+
+          errores = []
+
+          if "<form" not in html: errores.append("Falta la etiqueta <form>.")
+          if "<label" not in html: errores.append("Falta la etiqueta <label>.")
+          if "type=\"email\"" not in html and "type=\x27email\x27" not in html: errores.append("Falta el input de tipo email.")
+          if "type=\"password\"" not in html and "type=\x27password\x27" not in html: errores.append("Falta el input de tipo password.")
+          if "<table" not in html or "<tr" not in html or "<td" not in html: errores.append("Falta la estructura de tabla (<table>, <tr>, <td>).")
+
+          if errores:
+              print("❌ ERRORES ENCONTRADOS EN LA ESTRUCTURA HTML:")
+              for e in errores: print(f"  - {e}")
+              sys.exit(1)
+          else:
+              print("✅ PRUEBA PASADA: Formulario y tabla estructurados correctamente.")
+              sys.exit(0)
+          '
