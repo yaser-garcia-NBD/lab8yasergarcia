@@ -1,0 +1,12 @@
+# Configuración local y credenciales
+/config/db.php
+
+# Datos personales locales
+/estudiante.json
+
+# Archivos temporales y de prueba
+/prueba.php
+/prueba_db.php
+/prueba_estudiante.php
+/revisar_tablas.php
+/crear_tabla.php
